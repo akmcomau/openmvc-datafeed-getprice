@@ -22,7 +22,7 @@ class GetPrice extends Controller {
 		foreach ($products as $product) {
 			$category = '';
 			$attributes = $product->getAttributes();
-			if ($attributes[$getprice->id]) {
+			if (isset($attributes[$getprice->id])) {
 				$category_db = $model->getModel('\modules\datafeed_myshopping\classes\models\MyShoppingCategory')->get([
 					'id' => $attributes[$getprice->id]->product_attribute_category_id,
 				]);
@@ -35,11 +35,16 @@ class GetPrice extends Controller {
 				$image = $this->config->getSiteUrl().$images[0]->getThumbnailUrl();
 			}
 
+			$description = $product->description;
+			$description = str_replace("\n", '', $description);
+			$description = str_replace("\r", '', $description);
+			$description = substr(strip_tags($product->description), 0, 255);
+
 			$data[] = [
 				$product->name,
 				$product->sku,
 				$product->id,
-				substr(strip_tags($product->description), 0, 255),
+				$description,
 				$category,
 				$product->getBrandName(),
 				$product->model,
