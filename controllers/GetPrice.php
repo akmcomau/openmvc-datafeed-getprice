@@ -49,7 +49,7 @@ class GetPrice extends Controller {
 				$product->getBrandName(),
 				$product->model,
 				$image,
-				$image = $this->config->getSiteUrl().$product->getUrl($this->url),
+				$this->config->getSiteUrl().$product->getUrl($this->url),
 				$product->sell,
 				'',
 				'',
