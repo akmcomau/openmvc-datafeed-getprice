@@ -43,7 +43,7 @@ class Installer {
 		$table->dropTable();
 
 		$attribute = $model->getModel('\modules\products\classes\models\ProductAttribute')->get(['type' => 'category|\modules\datafeed_getprice\classes\models\GetPriceCategory']);
-		//$attribute->delete();
+		$attribute->delete();
 	}
 
 	public function enable() {
