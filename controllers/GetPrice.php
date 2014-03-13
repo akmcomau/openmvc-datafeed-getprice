@@ -13,7 +13,10 @@ class GetPrice extends Controller {
 
 	public function index() {
 		$model = new Model($this->config, $this->database);
-		$products = $model->getModel('\modules\products\classes\models\Product')->getMulti();
+		$products = $model->getModel('\modules\products\classes\models\Product')->getMulti([
+			'site_id' => ['type'=>'in', 'value'=>$this->allowedSiteIDs()],
+			'active' => TRUE
+		]);
 
 		$getprice = $model->getModel('\modules\products\classes\models\ProductAttribute')->get([
 			'name' => 'GetPrice Category',
@@ -41,7 +44,7 @@ class GetPrice extends Controller {
 			}
 
 			$description = $product->description;
-			$description = str_replace("\n", '', $description);
+			$description = str_replace("\n", ' ', $description);
 			$description = str_replace("\r", '', $description);
 			$description = substr(strip_tags($description), 0, 255);
 
@@ -62,6 +65,7 @@ class GetPrice extends Controller {
 		}
 
 		$csv = $this->response->arrayToCsv($data);
+		$csv = str_replace('""', '\\"', $csv);
 		$this->response->setCsvContent($this, $csv);
 	}
 }
